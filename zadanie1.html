@@ -8,9 +8,16 @@
             <input type="email" id="email1" name="email1" placeholder="example@test.com"><br><br> 
         </form>
         <form>
-            <label for="zip">Zip Code</label>
+            <label for="zip">Kod pocztowy</label>
             <input id="zip" name="zip" type="text" inputmode="numeric" pattern="^\s*?\d{2}(?:[-\s]\d{3})?\s*?$" placeholder="00-000"> <br><br>
         </form>
-        
+        <form>
+            <label for="nip">NIP</label>
+            <input id="nip" name="nip" type="text" inputmode="numeric" pattern="^((\d{3}[-]\d{3}[-]\d{2}[-]\d{2})|(\d{3}[-]\d{2}[-]\d{2}[-]\d{3}))$" placeholder="000-000-00-00"> <br><br>
+        </form>
+        <form>
+            <label for="dowod">Numer dowodu</label>
+            <input id="dowod" name="dowod" type="text" inputmode="numeric" pattern="^(([A-Z]{3}[ ]\d{6})\)$" placeholder="AAA 000000"> <br><br>
+        </form>
     </body>
 </html>
