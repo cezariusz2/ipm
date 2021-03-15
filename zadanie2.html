@@ -34,7 +34,7 @@
         
         
             <label for="path">7b. Ścieżka</label>
-            <input id="path" name="path" type="text" placeholder="F:\WiNDows\temp" pattern="[a-zA-Z]:\\[\\\S|*\S]?.*"> <br><br>
+            <input id="path" name="path" type="text" placeholder="F:\WiNDows\temp" pattern="[a-zA-Z]:\\([Ww][Ii][Nn][Dd][Oo][Ww][Ss]|[Ww][Ii][Nn][Nn][Tt]|[Ww][Ii][Nn]|[Dd][Oo][Ss]|[Mm][Ss][Dd][Oo][Ss]+\\)[\\\S|*\S]?.*"> <br><br>
         
         
             <label for="path">8. Ścieżka </label>
@@ -54,6 +54,12 @@
             <label for="date2">2.4 Wybór daty pracującej w tym tyg</label>
             <input id = "date2" name="date2" type="date" min="2021-03-15" max="2021-03-19"><br><br>
 
+
+            <label for="time1">2.5a Czas 12h</label>
+            <input id = "time1" name="time1" type="text" placeholder="9:30PM" pattern="^(0|1|){1}[0-9]{1}:[0-5]{1}[0-9]{1}(AM|PM)"><br><br>
+
+            <label for="time2">2.5b Czas 24h</label>
+            <input id = "time2" name="time2" type="text" placeholder="22:30" pattern="^(0|1|2|){1}[0-9]{1}:[0-5]{1}[0-9]{1}"><br><br>
 
             <input type="submit">
         </form>
