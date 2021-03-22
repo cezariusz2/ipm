@@ -2,31 +2,46 @@
     <head>
         <link rel="stylesheet" href="zadanie3.css">
         <script>
-
+            var x = 0;
+            var y = 0;
             function allowDrop(ev) {
               ev.preventDefault();
             }
             
-            function drag(ev) {
-              ev.dataTransfer.setData("text", ev.target.id);
-            }
-            
             function drop(ev) {
-              ev.preventDefault();
-              var data = ev.dataTransfer.getData("text");
-              var z = document.getElementById(data);
-              z.style.top = ev.clientY;
-              z.style.left = ev.clientX;
-              z.style.zIndex = 3;
-              ev.target.appendChild(z);
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                var z = document.getElementById(data);
+                z.style.top = ev.clientY - y;
+                z.style.left = ev.clientX - x;
+                z.style.zIndex = 3;
+
+                var t = document.getElementsByClassName("block");
+                
+                var success = true;
+                for(let i =0;i<t.length;i++){
+                    var ztop = parseInt(z.style.top,10);
+                    var zleft = parseInt(z.style.left,10);
+                    var eletop = parseInt(t[i].style.top,10);
+                    var eleleft = parseInt(t[i].style.top,10);
+                    if((ztop > eletop - 100 && ztop < eletop + 100) && (zleft > eleleft - 100 && zleft < eleleft + 100)){
+                        success = false;      
+                    }
+                }
+                if(success){
+                    ev.target.appendChild(z);
+                }
+                console.log(success);                
             }
             function generateblock(ev) {
                 var z = document.createElement('div');
-                
                 z.className = "block"
                 z.draggable = "true";
                 z.ondragstart = function drag(ev) {
                     ev.dataTransfer.setData("text", ev.target.id);
+                    var rect = ev.target.getBoundingClientRect();
+                    x = ev.clientX - rect.left; //x position within the element.
+                    y = ev.clientY - rect.top;  //y position within the element.
                 };
                 const randomColor = Math.floor(Math.random()*16777215).toString(16); 
                 z.style.backgroundColor = "#" + randomColor;
