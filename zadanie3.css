@@ -46,7 +46,7 @@ body{
     position: absolute;
     top: 150px;
 }
-.platform{
+#platform{
     height: 20px;
     width: 100%;
     background-color: black;

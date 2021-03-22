@@ -12,24 +12,23 @@
                 ev.preventDefault();
                 var data = ev.dataTransfer.getData("text");
                 var z = document.getElementById(data);
-                z.style.top = ev.clientY - y;
-                z.style.left = ev.clientX - x;
-                z.style.zIndex = 3;
 
                 var t = document.getElementsByClassName("block");
-                
-                var success = true;
-                for(let i =0;i<t.length;i++){
-                    var ztop = parseInt(z.style.top,10);
-                    var zleft = parseInt(z.style.left,10);
-                    var eletop = parseInt(t[i].style.top,10);
-                    var eleleft = parseInt(t[i].style.top,10);
+                var ztop = parseFloat(ev.clientY - y,10);
+                var zleft = parseFloat(ev.clientX - x,10);
+                for(let t1 of t){
+                    var eletop = parseFloat(t1.style.top,10);   
+                    var eleleft = parseFloat(t1.style.left,10);
+                    if(z.id != t1.id)
                     if((ztop > eletop - 100 && ztop < eletop + 100) && (zleft > eleleft - 100 && zleft < eleleft + 100)){
                         success = false;      
                     }
                 }
-                if(success){
-                    ev.target.appendChild(z);
+                //var plat = document.getElementById("platform");
+                if(success){ 
+                    z.style.top = ev.clientY - y;
+                    z.style.left = ev.clientX - x;
+                    z.style.zIndex = 3; 
                 }
                 console.log(success);                
             }
@@ -54,7 +53,7 @@
     <body>
         <div class = "container">
             <div class = "left" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <div class = "platform"></div>
+                <div id = "platform"></div>
             </div>
             <div class = "right" id= "r">
                 <button onclick="generateblock(event)" class = "button-generate">Generuj klocek</button>
