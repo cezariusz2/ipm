@@ -1,15 +1,48 @@
 <html>
     <head>
         <link rel="stylesheet" href="zadanie3.css">
+        <script>
+
+            function allowDrop(ev) {
+              ev.preventDefault();
+            }
+            
+            function drag(ev) {
+              ev.dataTransfer.setData("text", ev.target.id);
+            }
+            
+            function drop(ev) {
+              ev.preventDefault();
+              var data = ev.dataTransfer.getData("text");
+              var z = document.getElementById(data);
+              z.style.top = ev.clientY;
+              z.style.left = ev.clientX;
+              z.style.zIndex = 3;
+              ev.target.appendChild(z);
+            }
+            function generateblock(ev) {
+                var z = document.createElement('div');
+                
+                z.className = "block"
+                z.draggable = "true";
+                z.ondragstart = function drag(ev) {
+                    ev.dataTransfer.setData("text", ev.target.id);
+                };
+                const randomColor = Math.floor(Math.random()*16777215).toString(16); 
+                z.style.backgroundColor = "#" + randomColor;
+                z.id = ""+randomColor;
+
+                document.getElementById("r").appendChild(z);
+            }
+            </script>
     </head>
     <body>
         <div class = "container">
-            <div class = "left">
+            <div class = "left" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <div class = "platform"></div>
             </div>
-            <div class = "right">
-                <button class = "button-generate">Generuj klocek</button>
-                <div class = "place-generate"></div>
+            <div class = "right" id= "r">
+                <button onclick="generateblock(event)" class = "button-generate">Generuj klocek</button>
             </div>
         </div>
     </body>

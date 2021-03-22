@@ -8,35 +8,48 @@ body{
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: blue;
     display: flex;
     
 }
 .left{
     height: 100%;
     width: 80%;
-    background-color: green;
+    position: relative;
 }
 .right{
     height: 100%;
     width:20%;
     flex-grow: 1;
-    background-color: red;
+    background-color: gray;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 .button-generate{
     height: 20%;
     width: 80%;
-    background-color: green;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.place-generate{
-    height: 20%;
-    width: 80%;
-    background-color: blue;
+#place-generate{
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 150px;
+
+}
+.block{
+    height: 100px;
+    width: 100px; 
+    position: absolute;
+    top: 150px;
+}
+.platform{
+    height: 20px;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    bottom: 30px;;
 }
