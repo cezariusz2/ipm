@@ -15,7 +15,9 @@
 
                 var t = document.getElementsByClassName("block");
                 var ztop = parseFloat(ev.clientY - y,10);
+
                 var zleft = parseFloat(ev.clientX - x,10);
+                var success = true;
                 for(let t1 of t){
                     var eletop = parseFloat(t1.style.top,10);   
                     var eleleft = parseFloat(t1.style.left,10);
@@ -53,10 +55,13 @@
     <body>
         <div class = "container">
             <div class = "left" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h3>Kolizja uniemożliwia przesunięcie klocka</h3>
                 <div id = "platform"></div>
             </div>
             <div class = "right" id= "r">
+                
                 <button onclick="generateblock(event)" class = "button-generate">Generuj klocek</button>
+                
             </div>
         </div>
     </body>
