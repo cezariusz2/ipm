@@ -16,7 +16,6 @@
                 for(let t1 of lists){
                     t1.id = i++; 
                 }
-
                 dragged = target;
                 id = target.id;
                 list = target.parentNode.children;
@@ -39,7 +38,6 @@
                     indexDrop = i;
                     }
                 }
-                console.log(index, indexDrop);
                 if(index > indexDrop) {
                     target.before( dragged );
                 } else {
@@ -51,6 +49,8 @@
     </head>
     <body>
         <div class = "container">
+            <br>
+            <center><p>Można dodawać i usuwać dowolne elementy. Po złapaniu za numer można przesunąć wiersz w dowolne miejsce</p></center>
             <br>
         <ol id = "lista" start = "1" contenteditable="true" >
             <li class="dropzone" id='1' draggable="true">Text1</li>
