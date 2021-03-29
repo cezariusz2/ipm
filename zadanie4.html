@@ -1,29 +1,14 @@
 <html>
     <head>
         <link rel="stylesheet" href="zadanie4.css">
-        <script>
-            function allowDrop(ev) {
-              ev.preventDefault();
-            }
-            
-            function drag(ev) {
-              ev.dataTransfer.setData("text", ev.target.id);
-            }
-            
-            function drop(ev) {
-              ev.preventDefault();
-              var data = ev.dataTransfer.getData("text");
-              ev.target.appendChild(document.getElementById(data));
-            }
-            </script>
     </head>
     <body>
         <div class = "container">
             <br>
-        <ol id = "lista" start = "0" contenteditable="true"  ondrop="drop(event)" ondragover="allowDrop(event)">
-            <li draggable = "true" id = "x">Text1</li>
-            <li draggable = "true" id = "y">Text1</li>
-            <li draggable = "true" id = "z">Text1</li>
+        <ol id = "lista" start = "0" contenteditable="true" >
+            <li >Text1</li>
+            <li >Text2</li>
+            <li >Text3</li>
         </ol>
     </div>
     </body>
