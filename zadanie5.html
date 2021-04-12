@@ -15,7 +15,7 @@
         request.onsuccess = function (event) {
             db = event.target.result;
             console.log("Open success");
-            
+
             readAll();
         };
         request.onupgradeneeded = function (event) {
@@ -32,7 +32,7 @@
             var name = document.getElementById('name1').value;
             var email = document.getElementById('email1').value;
             var www = document.getElementById('www1').value;
-            
+
             var request = db.transaction([DB_STORE_NAME], 'readwrite')
                 .objectStore(DB_STORE_NAME)
                 .add({ name: name, www: www, email: email });
@@ -45,6 +45,22 @@
                 console.log('The data has been written failed');
             }
         }
+        function clearObjectStore() {
+
+            var store = db.transaction(DB_STORE_NAME, 'readwrite').objectStore(DB_STORE_NAME);
+            var req = store.clear();
+            req.onsuccess = function (evt) {
+                console.log("Cleared")
+            };
+            req.onerror = function (evt) {
+                console.error("clearObjectStore:", evt.target.errorCode);
+            };
+            const table_clients = document.getElementById("table-clients");
+            while (table_clients.firstChild) {
+                table_clients.removeChild(table_clients.lastChild);
+            }
+            readAll();
+        }
         function readAll() {
             var objectStore = db.transaction(DB_STORE_NAME).objectStore(DB_STORE_NAME);
 
@@ -52,10 +68,17 @@
                 var cursor = event.target.result;
 
                 if (cursor) {
-                    console.log('Id: ' + cursor.key);
-                    console.log('Name: ' + cursor.value.name);
-                    console.log('WWW: ' + cursor.value.www);
-                    console.log('Email: ' + cursor.value.email);
+                    var r = document.createElement('tr');
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.name;
+                    r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.email;
+                    r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.www;
+                    r.appendChild(t);
+                    document.getElementById("table-clients").appendChild(r);
                     cursor.continue();
                 } else {
                     console.log('No more data');
@@ -83,6 +106,7 @@
 
                 <input type="submit" onclick="add()">
             </form>
+            <button onclick="clearObjectStore()">Wyczysc cala baze</button>
         </div>
         <div class="right">
             <table id="table-clients">
@@ -90,7 +114,7 @@
                     <th>Nazwa firmy</th>
                     <th>Email</th>
                     <th>Strona WWW</th>
-                  </tr>
+                </tr>
             </table>
         </div>
     </div>
