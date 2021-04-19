@@ -75,47 +75,9 @@
             readAll();
         }
         function readAll() {
-            var objectStore = db.transaction(DB_STORE_NAME).objectStore(DB_STORE_NAME);
-
-            objectStore.openCursor().onsuccess = function (event) {
-                var cursor = event.target.result;
-
-                if (cursor) {
-                    var r = document.createElement('tr');
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.name;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.lname;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.email;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.pesel;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.phone;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.address1;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.address2;
-                    r.appendChild(t);
-                    var t = document.createElement('td');
-                    t.innerHTML = cursor.value.postalcode;
-                    r.appendChild(t);
-                    var t = document.createElement('button');
-                    t.innerHTML = 'X';
-                    t.id = cursor.key;
-                    t.onclick = function () { deleteRow(t.id) };
-                    r.appendChild(t);
-                    r.id = "row" + t.id;
-                    document.getElementById("table-clients").appendChild(r);
-                    cursor.continue();
-                }
-            };
+            var filterS = document.getElementById("name2filter").value;
+            filterS.innerHTML = "";
+            filter();
         }
         function clear_table_clients() {
             var table_clients = document.getElementById("table-clients");
@@ -129,8 +91,14 @@
             clear_table_clients();
             objectStore.openCursor().onsuccess = function (event) {
                 var cursor = event.target.result;
+                var exists = false;
                 if (cursor) {
-                    if (cursor.value.lname.startsWith(filter)) {
+                    for (var field in cursor.value) {
+                        if(cursor.value[field].startsWith(filter)){
+                            exists = true;
+                        }
+                    }
+                    if (exists) {
                         var r = document.createElement('tr');
                         var t = document.createElement('td');
                         t.innerHTML = cursor.value.name;
@@ -218,7 +186,7 @@
                 <input type="submit">
             </form>
             <form oninput="filter(this)">
-                <label for="filter1">Wpisz wyszukiwane nazwisko</label><br>
+                <label for="filter1">Wpisz wyszukiwaną fraze</label><br>
                 <input type="text" name="filter1" id="name2filter" placeholder="Nazwisko" reqiured><br>
             </form>
             <button onclick="clearObjectStore()">Wyczyść całą bazę</button>
