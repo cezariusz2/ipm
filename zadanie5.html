@@ -26,16 +26,29 @@
                 objectStore.createIndex("name", "name", { unique: false });
                 objectStore.createIndex("email", "email", { unique: true });
                 objectStore.createIndex("lname", "lname", { unique: false });
+                objectStore.createIndex("pesel", "pesle", { unique: true });
+                objectStore.createIndex("phone", "phone", { unique: false });
+                objectStore.createIndex("address1", "address1", { unique: false });
+                objectStore.createIndex("address2", "address2", { unique: false });
+                objectStore.createIndex("postalcode", "postalcode", { unique: false });
             }
         }
         function add(request) {
             var name = document.getElementById('name1').value;
             var email = document.getElementById('email1').value;
             var name2 = document.getElementById('name2').value;
+            var pesel1 = document.getElementById('pesel1').value;
+            var phone1 = document.getElementById('phone1').value;
+            var address1 = document.getElementById('address1').value;
+            var address2 = document.getElementById('address2').value;
+            var postalcode1 = document.getElementById('postalcode1').value;
+            
+
+            
 
             var request = db.transaction([DB_STORE_NAME], 'readwrite')
                 .objectStore(DB_STORE_NAME)
-                .add({ name: name, lname: name2, email: email });
+                .add({ name: name, lname: name2, email: email ,pesel: pesel1, phone: phone1, address1: address1, address2: address2,postalcode: postalcode1});
 
             request.onsuccess = function (event) {
                 console.log('The data has been written successfully');
@@ -78,6 +91,21 @@
                     var t = document.createElement('td');
                     t.innerHTML = cursor.value.email;
                     r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.pesel;
+                    r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.phone;
+                    r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.address1;
+                    r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.address2;
+                    r.appendChild(t);
+                    var t = document.createElement('td');
+                    t.innerHTML = cursor.value.postalcode;
+                    r.appendChild(t);
                     var t = document.createElement('button');
                     t.innerHTML = 'X';
                     t.id = cursor.key;
@@ -109,15 +137,32 @@
     <div class="container">
         <div class="left">
             <br><br>
-            <form>
+            <form onsubmit="return add(this)">
                 <label for='name1'>Imię</label><br>
                 <input type='text' id="name1" ,name="name1" , placeholder="Imię"><br><br>
+
                 <label for="name2">Nazwisko</label><br>
-                <input id="name2" name="name2" type="text" placeholder="Nazwisko"> <br><br>
+                <input id="name2" name="name2" type="text" placeholder="Nazwisko" required> <br><br>
+
                 <label for="email1">Email</label><br>
                 <input type="email" id="email1" name="email1" placeholder="example@test.com" required><br><br>
 
-                <input type="submit" onclick="add()">
+                <label for="pesel1">PESEL</label><br>
+                <input type="text" id="pesel1" name="pesel1" inputmode="numeric" placeholder="12345678911" pattern="[0-9]{11}" required><br><br>
+
+                <label for="phone1">Telefon</label><br>
+                <input type="text" id="phone1" name="phone1" placeholder="666777888" pattern="[0-9]{9}" required ><br><br>
+
+                <label for="address1">Adres</label><br>
+                <input type="text" id="address1" name="address1" placeholder="Wschodnia 5" required><br><br>
+
+                <label for="address2">Miasto</label><br>
+                <input type="text" id="address2" name="address2" placeholder="Warszawa" required><br><br>
+
+                <label for="postalcode1">Kod pocztowy</label><br>
+                <input id="postalcode1" name="postalcode1" type="text" inputmode="numeric" pattern="^\s*?\d{2}(?:[-\s]\d{3})?\s*?$" placeholder="00-000" required><br><br>
+
+                <input type="submit" >
             </form>
             <button onclick="clearObjectStore()">Wyczyść całą bazę</button>
         </div>
@@ -127,6 +172,11 @@
                     <th>Imię</th>
                     <th>Nazwisko</th>
                     <th>Email</th>
+                    <th>PESEL</th>
+                    <th>Telefon</th>
+                    <th>Adres</th>
+                    <th>Miasto</th>
+                    <th>Kod pocztowy</th>
                     <th>Usuń</th>
                 </tr>
             </table>
