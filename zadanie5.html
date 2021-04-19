@@ -94,7 +94,7 @@
                 var exists = false;
                 if (cursor) {
                     for (var field in cursor.value) {
-                        if (cursor.value[field].startsWith(filter)) {
+                        if (cursor.value[field].includes(filter)) {
                             exists = true;
                         }
                     }
@@ -190,7 +190,7 @@
                 <label for="filter1">Wpisz wyszukiwaną frazę</label><br>
                 <input type="text" name="filter1" id="name2filter" placeholder="Szukana fraza" reqiured><br>
             </form>
-            <h6>Pokazuje rekordy w których jakieś pole zaczyna się od wyszukiwanego słowa</h6><br><br><br>
+            <h6>Pokazuje rekordy w których jakieś pole zawiera wyszukiwaną frazę</h6><br><br><br>
             <button onclick="clearObjectStore()">Wyczyść całą bazę</button>
         </div>
         <div class="right">
