@@ -219,43 +219,42 @@ function makeid(length) {
     return result.join('');
 }
 
-
-
-function getDbObjects(filter = (object) => true) {
-    let ret = new Promise((res, rej) => {
-        let objects = [];
-        if (database) {
-            var store = database.transaction(OBJECTSTORE_NAME, 'readonly').objectStore(OBJECTSTORE_NAME);
-            store.openCursor().onsuccess = (e) => {
-                var c = e.target.result;
-                if (c) {
-                    if (filter(c.value)) {
-                        objects.push(c.value);
-                    }
-                    c.continue();
-                } else {
-                    res(objects);
-                }
-            };
-        }
-    });
-    return ret;
+function createJSONfromForm(){
+    var jsonobj = [];
+    var item = {};
+    item["name"] = document.getElementById('name1').value;
+    item["email"] = document.getElementById('email1').value;
+    item["name2"] = document.getElementById('name2').value;
+    item["pesel"] = document.getElementById('pesel1').value;
+    item["phone"] = document.getElementById('phone1').value;
+    item["address1"] = document.getElementById('address1').value;
+    item["address2"] = document.getElementById('address2').value;
+    item["postalcode"] = document.getElementById('postalcode1').value;
+    
+    jsonobj.push(item);
+    return jsonobj;
+}
+function fillFormFromJSON(response){
+    document.getElementById('name1').value = response[0]["name"];
+    document.getElementById('email1').value = response[0]["email"];
+    document.getElementById('name2').value = response[0]["name2"];
+    document.getElementById('pesel1').value = response[0]["pesel"];
+    document.getElementById('phone1').value = response[0]["phone"];
+    document.getElementById('address1').value = response[0]["address1"];
+    document.getElementById('address2').value = response[0]["address2"];
+    document.getElementById('postalcode1').value = response[0]["postalcode"];
 }
 window.onload = () => {
-    //if (window != self) {
-        console.log("worker");
-        worker_function();
-        worker = new Worker('worker7.js');
-        const triggerWorkerButton = document.getElementById('TriggerWorker');
-        triggerWorkerButton.addEventListener('click', (e) => {
-            getDbObjects().then((value) => {
-                worker.postMessage(JSON.stringify(value))
-            });
-        });
-    //}
-
-
-}
-function worker_function() {
-
+    console.log("worker");
+    worker = new Worker('worker7.js');
+    const triggerWorkerButton = document.getElementById('TriggerWorker');
+    triggerWorkerButton.addEventListener('click', (e) => {
+        value = createJSONfromForm();
+        worker.postMessage(JSON.stringify(value));
+    });
+    worker.onmessage = function(e) {
+        console.log('Message received from worker');
+        console.log(e.data);
+        fillFormFromJSON(e.data);
+      }
 }
