@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="zadanie5.css">
+    <link rel="stylesheet" href="zadanie7.css">
     <meta charset="UTF-8" />
     <script>
         
@@ -49,13 +49,15 @@
                 <input type="text" name="filter1" id="name2filter" placeholder="Szukana fraza" reqiured><br>
             </form>
             <form>
+                <label for="photoURL">Podaj link do zdjęcia</label><br>
                 <input type="text" name="photoURL" id="photoURL" placeholder="Podaj URL pliku jpg"><br>
-                <input type="submit">
             </form>
+            <button id="TriggerWorker2">Dodaj maskę obrazu</button><br><br>
             <button onclick="clearObjectStore()">Wyczyść całą bazę</button>
             
         </div>
         <div class="right">
+            
             <table id="table-clients">
                 <tr>
                     <th>Imię</th>
@@ -70,9 +72,13 @@
                     <th>Edytuj</th>
                 </tr>
             </table>
+            <div id="photo1">
+                <img id="photo_with_mask"src="" alt="">
+                <div id = "mask"></div>
+            </div>
         </div>
     </div>
-    <script src="main7.js"></script>
+    <script src="main7b.js"></script>
 </body>
 
 </html>

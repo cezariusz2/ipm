@@ -219,7 +219,7 @@ function makeid(length) {
     return result.join('');
 }
 
-function createJSONfromForm(){
+function createJSONfromForm() {
     var jsonobj = [];
     var item = {};
     item["name"] = document.getElementById('name1').value;
@@ -230,11 +230,11 @@ function createJSONfromForm(){
     item["address1"] = document.getElementById('address1').value;
     item["address2"] = document.getElementById('address2').value;
     item["postalcode"] = document.getElementById('postalcode1').value;
-    
+
     jsonobj.push(item);
     return jsonobj;
 }
-function fillFormFromJSON(response){
+function fillFormFromJSON(response) {
     document.getElementById('name1').value = response[0]["name"];
     document.getElementById('email1').value = response[0]["email"];
     document.getElementById('name2').value = response[0]["name2"];
@@ -244,6 +244,27 @@ function fillFormFromJSON(response){
     document.getElementById('address2').value = response[0]["address2"];
     document.getElementById('postalcode1').value = response[0]["postalcode"];
 }
+function createStringJSONfromForm() {
+    var text = "";
+    text += document.getElementById('name1').value;
+    text += document.getElementById('email1').value;
+    text += document.getElementById('name2').value;
+    text += document.getElementById('pesel1').value;
+    text += document.getElementById('phone1').value;
+    text += document.getElementById('address1').value;
+    text += document.getElementById('address2').value;
+    text += document.getElementById('postalcode1').value;
+    text += document.getElementById('photoURL').value;
+    var jsonobj = [];
+    var item = {};
+    item['combinedString'] = text;
+    jsonobj.push(item);
+    return jsonobj;
+}
+function changePhoto() {
+    var ph = document.getElementById("photo_with_mask");
+    ph.src = document.getElementById("photoURL").value;
+}
 window.onload = () => {
     console.log("worker");
     worker = new Worker('worker7.js');
@@ -252,9 +273,22 @@ window.onload = () => {
         value = createJSONfromForm();
         worker.postMessage(JSON.stringify(value));
     });
-    worker.onmessage = function(e) {
-        console.log('Message received from worker');
-        console.log(e.data);
+    worker.onmessage = function (e) {
         fillFormFromJSON(e.data);
-      }
+    }
+    worker2 = new Worker('worker7b.js');
+    const triggerWorkerButton2 = document.getElementById('TriggerWorker2');
+    triggerWorkerButton2.addEventListener('click', (e) => {
+        value = createStringJSONfromForm();
+        worker2.postMessage(JSON.stringify(value));
+    });
+    worker2.onmessage = function (e) {
+        //fillFormFromJSON(e.data);
+        var r = e.data[0]["R"];
+        var g = e.data[0]["G"];
+        var b = e.data[0]["B"];
+        changePhoto();
+        var ph2 = document.getElementById("mask");
+        ph2.style.backgroundColor = "rgba(" + r + ", " + g + ", " + b + ",0.5)";
+    }
 }
