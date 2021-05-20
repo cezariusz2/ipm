@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="zadanie8.css">
     <meta charset="UTF-8" />
     <script>
-        
+
     </script>
 </head>
 
@@ -12,7 +12,7 @@
     <div class="container">
         <div class="left">
             <br><br>
-            <form onsubmit="return add(this)" id = "form1">
+            <form id="form1">
                 <label for='name1'>Imię</label><br>
                 <input type='text' id="name1" ,name="name1" , placeholder="Imię"><br>
 
@@ -37,27 +37,25 @@
 
                 <label for="postalcode1">Kod pocztowy</label><br>
                 <input id="postalcode1" name="postalcode1" type="text" inputmode="numeric"
-                    pattern="^\s*?\d{2}(?:[-\s]\d{3})?\s*?$" placeholder="00-000" required><br><br>
+                    pattern="^\s*?\d{2}(?:[-\s]\d{3})?\s*?$" placeholder="00-000" required><br>
 
-                <input type="submit">
+                <label for="photoURL">Podaj link do zdjęcia</label><br>
+                <input type="text" name="photoURL" id="photoURL" placeholder="Podaj URL pliku jpg"><br><br>
+                <!-- <input type="submit"> -->
+                <button id="TriggerSubmit">Prześlij</button>
             </form>
-            <button onclick="return generate()">Generate</button>
+            <button onclick="return generate()">Generate</button><br>
             <button id="TriggerWorker">Odwróć litery</button>
             <form oninput="filter(this)">
 
                 <label for="filter1">Wpisz wyszukiwane frazy po spacji</label><br>
                 <input type="text" name="filter1" id="name2filter" placeholder="Szukana fraza" reqiured><br>
             </form>
-            <form>
-                <label for="photoURL">Podaj link do zdjęcia</label><br>
-                <input type="text" name="photoURL" id="photoURL" placeholder="Podaj URL pliku jpg"><br>
-            </form>
-            <button id="TriggerWorker2">Dodaj maskę obrazu</button><br><br>
             <button onclick="clearObjectStore()">Wyczyść całą bazę</button>
-            
+
         </div>
         <div class="right">
-            
+
             <table id="table-clients">
                 <tr>
                     <th>Imię</th>
@@ -73,10 +71,9 @@
                 </tr>
             </table>
             <div id="photo1">
-                <!-- <img id="photo_with_mask" src="" alt="a" > -->
                 <canvas id="canvas" width="100" height="100"> </canvas>
-                <div id = "mask"></div>
-                
+                <div id="mask"></div>
+
             </div>
         </div>
     </div>

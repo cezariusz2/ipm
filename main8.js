@@ -2,9 +2,9 @@ const DB_NAME = 'Zadanie7Database';
 const DB_VERSION = 4;
 const DB_STORE_NAME = 'Clients';
 var db;
-var r;
-var g;
-var b;
+var r = 0;
+var g = 0;
+var b = 0;
 
 var request = indexedDB.open(DB_NAME, DB_VERSION);
 request.onerror = function (event) {
@@ -44,18 +44,17 @@ function add(request) {
     var postalcode1 = document.getElementById('postalcode1').value;
     var imageURL = document.getElementById('photoURL').value;
     var c = document.getElementById("canvas");
-    //alert("dataURL");
+    //////alert("dataURL");
     var canvas = c.getContext("2d");
-    //alert("dataURL");
+    //////alert("dataURL");
     canvas.beginPath();
     canvas.lineWidth = "100";
     canvas.strokeStyle = "rgba(" + r + "," + g + "," + b + ",0.5)";
-    canvas.clearRect(0, 0, 100, 100);
+    //canvas.clearRect(0, 0, 100, 100);
     canvas.rect(0, 0, 100, 100);
     canvas.stroke();
     var dataURL = c.toDataURL('image/jpeg', 0.5);
-    console.log(dataURL);
-    alert(dataURL);
+    //alert(dataURL);
     var image = dataURL;//document.getElementById('photo').value;
 
     var request = db.transaction([DB_STORE_NAME], 'readwrite')
@@ -68,7 +67,7 @@ function add(request) {
 
     request.onerror = function (event) {
         console.log('The data has been written failed');
-        alert("error");
+        //alert("error");
     }
 }
 function clearObjectStore() {
@@ -189,7 +188,6 @@ function editRow(key) {
             canvas.drawImage(img, 0, 0, 100, 100);
         };
         img.src = request.result.image;
-        console.log(img.src);
         deleteRow(key);
     };
 }
@@ -231,7 +229,7 @@ function generate() {
     document.getElementById('address1').value = address1;
     document.getElementById('address2').value = address2;
     document.getElementById('postalcode1').value = postalcode1;
-    document.getElementById('photoURL').value = "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg";
+    document.getElementById('photoURL').value = "https://upload.wikimedia.org/wikipedia/commons/6/66/An_up-close_picture_of_a_curious_male_domestic_shorthair_tabby_cat.jpg";
 
 }
 function getRandomIntInclusive(min, max) {
@@ -292,30 +290,23 @@ function createStringJSONfromForm() {
     jsonobj.push(item);
     return jsonobj;
 }
-function changePhoto() {
-    //var ph = document.getElementById("photo_with_mask");
-    //ph.src = document.getElementById("photoURL").value;
-    //ph.setAttribute("crossOrigin", "Anonymous");
+function loadImage(url) {
+    return new Promise(resolve => {
+        const image = new Image();
 
-    var img = new window.Image;
-    img.setAttribute("width", 100);
-    img.setAttribute("height", 100);
-    //img.setAttribute("crossOrigin", "Anonymous");
-    img.setAttribute('crossorigin', 'anonymous');
-    img.setAttribute("src", document.getElementById('photoURL').value);
-    img.onload = function () {
-        var c = document.getElementById("canvas");
-        var canvas = c.getContext("2d");
-        canvas.clearRect(0, 0, 100, 100);
-        canvas.drawImage(img, 0, 0, 100, 100);
-    };
-    
-    console.log("img src");
-    console.log(img.src);
-
+        image.setAttribute("width", 100);
+        image.setAttribute("height", 100);
+        image.setAttribute('crossorigin', 'anonymous');
+        image.addEventListener('load', () => {
+            resolve(image);
+        });
+        image.src = url;
+    });
 }
+
+
 window.onload = () => {
-    console.log("worker");
+    //console.log("worker");
     worker = new Worker('worker7.js');
     const triggerWorkerButton = document.getElementById('TriggerWorker');
     triggerWorkerButton.addEventListener('click', (e) => {
@@ -328,24 +319,28 @@ window.onload = () => {
     worker2 = new Worker('worker7b.js');
     const triggerWorkerButton2 = document.getElementById('TriggerWorker2');
     const addData = document.getElementById('form1');
-    addData.addEventListener('submit', (e) => {
-        console.log("worker na dodawanie");
-        value = createStringJSONfromForm();
-        worker2.postMessage(JSON.stringify(value));
+
+    const TriggerSubmitButton = document.getElementById('TriggerSubmit');
+    TriggerSubmitButton.addEventListener('click', (e) => {
+        loadImage(document.getElementById('photoURL').value).then(img => {
+            var c = document.getElementById("canvas");
+            var canvas = c.getContext("2d");
+            canvas.clearRect(0, 0, 100, 100);
+            canvas.drawImage(img, 0, 0, 100, 100);
+            value = createStringJSONfromForm();
+            worker2.postMessage(JSON.stringify(value));
+        });
+
     });
-    triggerWorkerButton2.addEventListener('click', (e) => {
-        console.log("filter na img");
-        value = createStringJSONfromForm();
-        worker2.postMessage(JSON.stringify(value));
-    });
+    
     worker2.onmessage = function (e) {
         //fillFormFromJSON(e.data);
         r = e.data[0]["R"];
         g = e.data[0]["G"];
         b = e.data[0]["B"];
-        changePhoto();
-        console.log("6");
         var ph2 = document.getElementById("mask");
         ph2.style.backgroundColor = "rgba(" + r + ", " + g + ", " + b + ",0.5)";
+        add("");
+        addData.submit();
     }
 }
