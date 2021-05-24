@@ -2,7 +2,7 @@ const DB_NAME = 'Zadanie5Database';
 const DB_VERSION = 4;
 const DB_STORE_NAME = 'Clients';
 var db;
-
+var editKey = -1;
 var request = indexedDB.open(DB_NAME, DB_VERSION);
 request.onerror = function (event) {
     console.log("Error occured");
@@ -28,9 +28,9 @@ request.onupgradeneeded = function (event) {
         objectStore.createIndex("postalcode", "postalcode", { unique: false });
     }
 }
-function addRecord(){
+function addRecord() {
     var form = document.getElementById('form1');
-    if(!form.checkValidity()) return;
+    if (!form.checkValidity()) return;
     add("");
     readAll();
 }
@@ -46,19 +46,53 @@ function add(request) {
 
 
 
+    if (editKey == -1) {
+        var request = db.transaction([DB_STORE_NAME], 'readwrite')
+            .objectStore(DB_STORE_NAME)
+            .add({ name: name, lname: name2, email: email, pesel: pesel1, phone: phone1, address1: address1, address2: address2, postalcode: postalcode1 });
+        request.onsuccess = function (event) {
+            console.log('The data has been written successfully');
+        };
 
-    var request = db.transaction([DB_STORE_NAME], 'readwrite')
-        .objectStore(DB_STORE_NAME)
-        .add({ name: name, lname: name2, email: email, pesel: pesel1, phone: phone1, address1: address1, address2: address2, postalcode: postalcode1 });
-
-    request.onsuccess = function (event) {
-        console.log('The data has been written successfully');
-    };
-
-    request.onerror = function (event) {
-        console.log('The data has been written failed');
+        request.onerror = function (event) {
+            console.log('The data has been written failed');
+        }
     }
+    else {
+        var objectStore = db.transaction(DB_STORE_NAME, 'readwrite').objectStore(DB_STORE_NAME);
+        //var request = objectStore.get(parseInt(editKey));
+        //objectStore.put({ name: name, lname: name2, email: email, pesel: pesel1, phone: phone1, address1: address1, address2: address2, postalcode: postalcode1 })
+        var request = objectStore.openCursor(IDBKeyRange.only(editKey)).onsuccess = function (event) {
+            var cursor = event.target.result;
+            var request2 = cursor.update({ name: name, lname: name2, email: email, pesel: pesel1, phone: phone1, address1: address1, address2: address2, postalcode: postalcode1 });
+            request2.onsuccess = function(){
+                console.log('The data has been written successfully');
+            }
+            request2.onerror = function(e){
+                console.log("DBM.activitati.edit -> error " + e); //Use "console" to log :)
+            }
+            
+        };
+
+        request.onerror = function (event) {
+            console.log('The data has been written failed');
+        }
+    }
+    editKey = -1;
+    clearInputs();
 }
+
+function clearInputs(){
+    document.getElementById('name1').value = "";
+        document.getElementById('email1').value = "";
+        document.getElementById('name2').value = "";
+        document.getElementById('pesel1').value = "";
+        document.getElementById('phone1').value = "";
+        document.getElementById('address1').value = "";
+        document.getElementById('address2').value = "";
+        document.getElementById('postalcode1').value = "";
+}
+
 function clearObjectStore() {
 
     var store = db.transaction(DB_STORE_NAME, 'readwrite').objectStore(DB_STORE_NAME);
@@ -166,7 +200,8 @@ function editRow(key) {
         document.getElementById('address1').value = request.result.address1;
         document.getElementById('address2').value = request.result.address2;
         document.getElementById('postalcode1').value = request.result.postalcode;
-        deleteRow(key);
+        editKey = parseInt(key);
+        //deleteRow(key);
     };
 }
 function deleteRow(key) {
@@ -225,7 +260,7 @@ function makeid(length) {
     return result.join('');
 }
 
-function createJSONfromForm(){
+function createJSONfromForm() {
     var jsonobj = [];
     var item = {};
     item["name"] = document.getElementById('name1').value;
@@ -236,11 +271,11 @@ function createJSONfromForm(){
     item["address1"] = document.getElementById('address1').value;
     item["address2"] = document.getElementById('address2').value;
     item["postalcode"] = document.getElementById('postalcode1').value;
-    
+
     jsonobj.push(item);
     return jsonobj;
 }
-function fillFormFromJSON(response){
+function fillFormFromJSON(response) {
     document.getElementById('name1').value = response[0]["name"];
     document.getElementById('email1').value = response[0]["email"];
     document.getElementById('name2').value = response[0]["name2"];
@@ -258,9 +293,9 @@ window.onload = () => {
         value = createJSONfromForm();
         worker.postMessage(JSON.stringify(value));
     });
-    worker.onmessage = function(e) {
+    worker.onmessage = function (e) {
         console.log('Message received from worker');
         console.log(e.data);
         fillFormFromJSON(e.data);
-      }
+    }
 }
