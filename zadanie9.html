@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="zadanie9.css">
+    <meta charset="UTF-8" />
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">
+            <br>
+            <!-- <form onsubmit="return add(this)"> -->
+            <form id="form1">
+                <label for='name1'>Imię</label><br>
+                <input type='text' id="name1" ,name="name1" , placeholder="Imię"><br>
+
+                <label for="name2">Nazwisko</label><br>
+                <input id="name2" name="name2" type="text" placeholder="Nazwisko" required> <br>
+
+                <label for="email1">Email</label><br>
+                <input type="email" id="email1" name="email1" placeholder="example@test.com" required><br>
+
+                <label for="pesel1">PESEL</label><br>
+                <input type="text" id="pesel1" name="pesel1" inputmode="numeric" placeholder="12345678911"
+                    pattern="[0-9]{11}" required><br>
+
+                <label for="phone1">Telefon</label><br>
+                <input type="text" id="phone1" name="phone1" placeholder="666777888" pattern="[0-9]{9}" required><br>
+
+                <label for="address1">Adres</label><br>
+                <input type="text" id="address1" name="address1" placeholder="Wschodnia 5" required><br>
+
+                <label for="address2">Miasto</label><br>
+                <input type="text" id="address2" name="address2" placeholder="Warszawa" required><br>
+
+                <label for="postalcode1">Kod pocztowy</label><br>
+                <input id="postalcode1" name="postalcode1" type="text" inputmode="numeric"
+                    pattern="^\s*?\d{2}(?:[-\s]\d{3})?\s*?$" placeholder="00-000" required><br>
+
+                <!-- <input type="submit"> -->
+
+            </form>
+            <button onclick="return addRecord()">Prześlij</button><br>
+            <!-- <form onsubmit="return generate(this)">
+                <input type="submit" ="Generate">
+            </form> -->
+            <button onclick="return generate()">Generate</button><br>
+            <button id="TriggerWorker">Odwróć litery</button>
+            <form oninput="filter(this)">
+
+                <label for="filter1">Wpisz wyszukiwane frazy po spacji</label><br>
+                <input type="text" name="filter1" id="name2filter" placeholder="Szukana fraza" reqiured><br>
+            </form>
+            <button onclick="clearObjectStore()">Wyczyść całą bazę</button><br>
+
+            <form>
+                <label for="products">Wybierz produkt</label>
+                <select name="products" id="products">
+                    <option disabled selected value> Wybierz produkt </option>
+                    <option value="Mleko">Mleko</option>
+                    <option value="Chleb">Chleb</option>
+                    <option value="Majonez">Majonez</option>
+                    <option value="Ketchup">Ketchup</option>
+                </select>
+                <br>
+                <label for="chosenClient">Wybrany klient</label><br>
+                <input disabled type="text" id="chosenClient" name="chosenClient" placeholder="-" required><br>
+                <!-- <input type="submit" value="Przejdź do faktury"> -->
+            </form>
+            <button onclick="return generateFaktura()">Przejdź do faktury</button><br>
+        </div>
+        <div class="right">
+            <table id="table-clients">
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Email</th>
+                    <th>PESEL</th>
+                    <th>Telefon</th>
+                    <th>Adres</th>
+                    <th>Miasto</th>
+                    <th>Kod pocztowy</th>
+                    <th>Usuń</th>
+                    <th>Edytuj</th>
+                    <th>Wybierz</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="main9.js"></script>
+</body>
+
+</html>
