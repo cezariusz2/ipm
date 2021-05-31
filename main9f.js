@@ -15,6 +15,7 @@ console.log(GetURLParameter("products"));
 console.log(GetURLParameter("id"));
 const product = GetURLParameter("products");
 const id = GetURLParameter("id");
+const cena = GetURLParameter("cena");
 
 const DB_NAME = 'Zadanie5Database';
 const DB_VERSION = 4;
@@ -59,5 +60,7 @@ function readId(key){
         document.getElementById('address2').innerHTML = request.result.address2;
         document.getElementById('postalcode1').innerHTML = request.result.postalcode;
         document.getElementById('selectedProduct').innerHTML = product;
+        document.getElementById('selectedProductCena').innerHTML = cena + "zł";
+        
     };
 }

@@ -211,12 +211,13 @@ function selectClient(key){
 }
 function generateFaktura(){
     console.log(document.getElementById("products").value);
-    var p = document.getElementById("products").value;
+    var p = document.getElementById("products").value.split(" ")[0];
+    var p2 = document.getElementById("products").value.split(" ")[1];
     var c = document.getElementById("chosenClient").value;
     if(p == "" || c == "-" || selectedClientId == -1){
         return;
     }
-    var redirectWindow = window.open('zadanie9f.html?products='+p+"&id="+selectedClientId, '_blank');
+    var redirectWindow = window.open('zadanie9f.html?products='+p+"&id="+selectedClientId+"&cena="+p2, '_blank');
     redirectWindow.location;
 }
 function editRow(key) {
